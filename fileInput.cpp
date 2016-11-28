@@ -1,5 +1,5 @@
 //takes in an input file and reads its contents to a string array
-
+//just making this edit to see if i know how to use github
 #include <iostream>
 #include <fstream>
 
