@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
 	//if the user does not input an input text file
-	if (argc != 3) {
+	if (argc != 2) {
 		cout << "Usage: " << argv[0] << "inputfile.txt" << "outputfile.txt"; //correct usage
 		exit(1);
 	}
@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 	string Input = " ";
 
 	int sequenceIndex = 0;
-	
+		
 	while(!ifs.eof()) { //while the scanner is not at the end of the file
 		getline(ifs, Input); //skips the first line that will be an ID
 		getline (ifs, Input); //reads line and assigns it to the string Input
@@ -36,12 +36,15 @@ int main(int argc, char** argv) {
 	//ifs.close(); //closes input file to prevent memory leak
 
 	//prints the array to see if it works
-	int newSequenceIndex = 0;
-	
+	sequenceIndex = 0;
+	ifs.clear();
+	ifs.seekg(0);
 	while(!ifs.eof()){
 		getline(ifs, Input);
 		getline (ifs, Input); // this is the actual sequence info
-		sequenceArray[sequenceIndex];
+		sequenceArray[sequenceIndex] = Input;
 		sequenceIndex++;
 	}
+	ifs.close();
+
 }
