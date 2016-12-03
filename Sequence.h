@@ -22,6 +22,9 @@ public:
     Sequence(const Sequence& orig);
     virtual ~Sequence();
     setData(int index, char value);
+    bool isChecked();
+    Sequence compare(Sequence node);
+    Sequence search(Sequence node);
 private:
 
 };
