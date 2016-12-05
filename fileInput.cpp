@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 	string Input = " ";
 
 	int sequenceIndex = 0;
-		
+
 	while(!ifs.eof()) { //while the scanner is not at the end of the file
 		getline(ifs, Input); //skips the first line that will be an ID
 		getline (ifs, Input); //reads line and assigns it to the string Input
@@ -32,16 +32,24 @@ int main(int argc, char** argv) {
 	}
 
 	Sequence sequenceArray[sequenceIndex];
-	
-	//ifs.close(); //closes input file to prevent memory leak
+	int counter = sequenceIndex - 2;
 
-	//prints the array to see if it works
 	sequenceIndex = 0;
 	ifs.clear();
 	ifs.seekg(0);
-	while(!ifs.eof()){
+	while(sequenceIndex <= counter){
 		getline(ifs, Input);
 		getline (ifs, Input); // this is the actual sequence info
+		int i = 0;
+		while(Input[i] != '\0') {
+			if(Input[i] == 'C' || Input[i] == 'A' || Input[i] == 'G' || Input[i] == 'T') {
+				i++;
+			}
+			else {
+				cout << "Invalid input. Sequences must contain ONLY A, G, C, or T." << endl;
+				exit(1);
+			}
+		}
 		sequenceArray[sequenceIndex] = Input;
 		sequenceIndex++;
 	}
