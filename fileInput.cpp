@@ -1,5 +1,11 @@
-//takes in an input file and reads its contents to a string array
-//just making this edit to see if i know how to use github
+//THIS SHOULD GO IN GENE CLASS FILE
+//main.cpp passes in char argv array with input file, output file, and min # overlap 
+//split into four parts: 1) read in lines, make sequences
+//2) form tree
+//3) send node (root) with min # of overlapping characters to Sequence Class
+//4) once finished, print tree to output file using in-order printing
+//5) clear tree
+// print execution time (in main.cpp)
 #include <iostream>
 #include <fstream>
 
@@ -7,8 +13,8 @@ using namespace std;
 
 int main(int argc, char** argv) {
 	//if the user does not input an input text file
-	if (argc != 2) {
-		cout << "Usage: " << argv[0] << "inputfile.txt" << "outputfile.txt"; //correct usage
+	if (argc != 3) {
+		cout << "Usage: " << argv[0] << "<inputfile.txt>" << "<outputfile.txt>" << "<size of overlap>"; //correct usage
 		exit(1);
 	}
 
@@ -53,6 +59,30 @@ int main(int argc, char** argv) {
 		sequenceArray[sequenceIndex] = Input;
 		sequenceIndex++;
 	}
-	ifs.close();
+	ifs.close(); //protect memory leaks
+        //here we should call to form the tree
+        //once tree is formed, call Sequence method compare and pass in size of comparision
+        ofstream ofs; //initialize output stream
+	ofs.open(argv[2]); //open output file
+	if(ofs.fail()){ //if there's an error
+		cout << "There's an error." << endl;
+		exit(1);
+	}
+	
+	/*
+         * int newSequenceIndex = 0; 
+         * while(newSequenceIndex <= counter) { //prints to ouput file TEST with array
+	 *	ofs << "Line " << newSequenceIndex << ": " <<  sequenceArray[newSequenceIndex] << endl;
+	 *	newSequenceIndex++;
+	} */
+        
+        //tree -> inOrder(tree->Root()); //perhaps how we'll do inOrder printing?
+        //inOrder printing should go: start at root
+        //if left Node exists, check for left node, once no left node exists, print node and clear
+        //go back to root. check for left node, etc until no left node exists
+        //then, print root
+        //print root's right node. print root's right node's right node, etc etc etc until there is no other right node
+        //clear all right nodes and root
+	ofs.close();
 
 }
