@@ -241,4 +241,3 @@ int String::getCharArraySize(const char arr[]) {
 String::~String() {
     delete [] data;
 }
-
