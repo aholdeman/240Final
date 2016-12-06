@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   Gene.cpp
  * Author: PhoebeNgo
@@ -38,12 +32,20 @@ Gene::Gene(ifstream& infile) : length(0) {
     }
 }
 
-void Gene::insertRoot(Sequence seq) {
-   //TODO 
+void Gene::insertRoot() {
+    Sequence lastSequence = sequenceArray[length-1];
+    
+    Tree tree = new Tree();
+    tree.insert(lastSequence);
+    tree.insertLeft(sequenceArray[0]);
 }
 
 void Gene::compare(Sequence &second) {
     //TODO
+}
+
+int Gene::getLength() {
+    return length;
 }
 
 Gene::Gene(const Gene& orig) {
@@ -75,7 +77,7 @@ Tree::Tree(const Tree& orig) {
 
 //destructor
 Gene::~Tree() {
-    clear(); //calls deleting method
+//    clear(); //calls deleting method
 }
 
 void Tree:: clear(Node *root)
@@ -140,19 +142,19 @@ void Tree:: insert(String value)
     }
 }
 
-void Tree:: insertRight(String value, Node *leaf)
+void Tree:: insertRight(String value)
 {
-    if(value >= leaf -> key_value) //goes to right tree
+    if(value >= root -> key_value) //goes to right tree
     {
-        if(leaf -> right!= '/n') //fix to null
+        if(root -> right!= '/n') //fix to null
         {
-            insert(value, leaf -> right); //recursive call
+            insertRight(value, root -> right); //recursive call
         }
         else
         {
             Node *newNode; //creating new node in tree
             newNode = new Node();
-            leaf -> right = newNode; //points to right of current node
+            root -> right = newNode; //points to right of current node
             newNode -> key_value = value; //sets equal to sequence value
             newNode -> left = '/n'; //sets new node's left child to null
             newNode -> right = '/n'; //sets new node's right child to null
@@ -160,19 +162,19 @@ void Tree:: insertRight(String value, Node *leaf)
     }
 }
 
-void Tree:: insertLeft(String value, Node *leaf)
+void Tree:: insertLeft(String value)
 {
-    if(value < leaf -> key_value) //goes to left tree
+    if(value < root -> key_value) //goes to left tree
     {
-        if(leaf -> left != '/n') //fix to null
+        if(root -> left != '/n') //fix to null
         {
-        insert(value, leaf -> left); //recursive call
+        insertLeft(value, root -> left); //recursive call
         }
         else
         {
             Node *newNode; //creating new node in tree
             newNode = new Node(); //need this?
-            leaf -> left=newNode; //points to left of current node 
+            root -> left=newNode; //points to left of current node 
             newNode -> key_value = value; //sets equal to sequence value
             newNode -> left = '/n'; //sets new node's left child to null
             newNode -> right = '/n'; //sets new node's right child to null
@@ -195,4 +197,3 @@ void Tree:: print(Node *root) //in order traverse print
     
     clear(root); //deletes tree memory 
 }
-
