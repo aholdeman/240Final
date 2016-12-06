@@ -41,9 +41,9 @@ Gene::Gene(ifstream& infile) {
             getline (infile, Input); // this is the actual sequence info
             int i = 0;
             while(Input[i] != '\0') {
-                    if(Input[i] == 'C' || Input[i] == 'A' || Input[i] == 'G' || Input[i] == 'T') {
-                            i++;
-                            charInput[i] = Input[i];
+                    if(Input[i] == 'C' || Input[i] == 'A' || Input[i] == 'G' || Input[i] == 'T') {    
+                        charInput[i] = Input[i];
+                        i++;
                     }
                     else {
                             cout << "Invalid input. Sequences must contain ONLY A, G, C, or T." << endl;
