@@ -116,25 +116,9 @@ void Tree:: insert(String value)
     }
 }
 
-void Tree:: insert(String value, Node *leaf)
+void Tree:: insertRight(String value, Node *leaf)
 {
-    if(value < leaf -> key_value) //goes to left tree
-    {
-        if(leaf -> left != '/n') //fix to null
-        {
-        insert(value, leaf -> left); //recursive call
-        }
-        else
-        {
-            Node *newNode; //creating new node in tree
-            newNode = new Node(); //need this?
-            leaf -> left=newNode; //points to left of current node 
-            newNode -> key_value = value; //sets equal to sequence value
-            newNode -> left = '/n'; //sets new node's left child to null
-            newNode -> right = '/n'; //sets new node's right child to null
-        }
-    } 
-    else if(value >= leaf -> key_value)
+    if(value >= leaf -> key_value) //goes to right tree
     {
         if(leaf -> right!= '/n') //fix to null
         {
@@ -152,6 +136,25 @@ void Tree:: insert(String value, Node *leaf)
     }
 }
 
+void Tree:: insertLeft(String value, Node *leaf)
+{
+    if(value < leaf -> key_value) //goes to left tree
+    {
+        if(leaf -> left != '/n') //fix to null
+        {
+        insert(value, leaf -> left); //recursive call
+        }
+        else
+        {
+            Node *newNode; //creating new node in tree
+            newNode = new Node(); //need this?
+            leaf -> left=newNode; //points to left of current node 
+            newNode -> key_value = value; //sets equal to sequence value
+            newNode -> left = '/n'; //sets new node's left child to null
+            newNode -> right = '/n'; //sets new node's right child to null
+        }
+    } 
+}
 void Tree:: print(Node *root) //in order traverse print
 {
     //need to go all the way to the left most child in tree, print

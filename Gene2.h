@@ -40,7 +40,8 @@ private:
     int length;
     
     void clear(Node *leaf); //memory leaks
-    void insert(String value, Node *leaf);
+    void insertLeft(String value, Node *leaf);
+    void insertRight(String value, Node *leaf);
     Node *search(String value, Node *leaf);
     Node *root; 
     void print(Node *root);
