@@ -135,3 +135,20 @@ void Tree:: insert(String value, Node *leaf)
         }
     }
 }
+
+void print(Node *root) //in order traverse print
+{
+    //need to go all the way to the left most child in tree, print
+    //then print that node's root, etc until reach root of tree
+    //then print root's right child, and that node's right child, etc
+    //until reach the right most node
+    
+    if(root != NULL)
+    {
+        print(root -> left); 
+        //need to print root
+        print(root -> right);
+    }
+}
+
+
