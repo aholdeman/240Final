@@ -136,7 +136,7 @@ void Tree:: insert(String value, Node *leaf)
     }
 }
 
-void print(Node *root) //in order traverse print
+void Tree:: print(Node *root) //in order traverse print
 {
     //need to go all the way to the left most child in tree, print
     //then print that node's root, etc until reach root of tree
