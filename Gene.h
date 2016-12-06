@@ -24,11 +24,12 @@ public:
     Gene(ifstream & infile);
     Gene(const Gene& orig);
     
+    void insertRoot(Sequence seq); 
+    void compare(Sequence &second);
     
     virtual ~Gene();
 private:
-    Sequence sequenceArray[];
-    Sequence *data;
+    Sequence *sequenceArray;
     int length;
 };
 
