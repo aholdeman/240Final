@@ -46,4 +46,3 @@ private:
 };
 
 #endif /* STRING_H */
-
