@@ -56,6 +56,32 @@ Sequence::Sequence(char str[], const int length) {
     }
 }
 
+String String::startSubstr(int begin, int end) {
+    String subString;
+    int indexSize = end-begin-1;
+    char testSubstr[indexSize];
+    int i(begin);
+    while(i <= indexSize) {
+        testSubstr[i] = data[i];
+        i++;
+    }
+    subString = String(testSubstr, i);
+    return subString;
+}
+
+String String::endSubstr(int begin, int end) {
+    String subString;
+    int indexSize = end-begin;
+    char testSubstr[indexSize];
+    int i(0);
+    while(begin < end) {
+        testSubstr[i] = data[begin];
+        i++;
+        begin++;
+    }
+    subString = String(testSubstr, i);
+    return subString;
+}
 
 //returns the length of the char[] inside the string class
 int Sequence::length() const{
