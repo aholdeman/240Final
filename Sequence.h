@@ -24,6 +24,8 @@ public:
     Sequence(const Sequence& orig); //copy constructor
     Sequence(char str[], const int length);
     
+    String startSubstr(int begin, int end);
+    String endSubstr(int begin, int end);
     int length() const;
     void clear();
     bool empty() const;
