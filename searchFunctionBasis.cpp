@@ -72,10 +72,18 @@ int main(int argc, char** argv) {
         sequenceArray[length] = charInput;
         length++;
     }
-    
-    
     String target = sequenceArray[length-1]; //last line is blank
     int minSim(20); //basis for minimum characters similar
+       return 0;
+    //calling search functions
+    searchRight(target, minSim, length, sequenceArray ); 
+    searchLeft(target, minSim, length, sequenceArray);
+}
+
+
+void searchRight(String target, int minSim, int length, String *sequenceArray)    
+{
+    
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
         int targetLength = target.length(); 
@@ -98,8 +106,36 @@ int main(int argc, char** argv) {
             isComplete = true;
         }
     }
-    
-
-    return 0;
 }
+
+void searchLeft(String target, int minSim, int length, String *sequenceArray)
+{
+    bool isComplete = false; //has it finished checking all of the indexes for available matches?
+    while (!isComplete) {
+        int targetLength = target.length(); 
+        String targetSubstr = target.endSubstr((0), minSim); //left section of the target to check for
+       
+        int i(0);
+        while(i < length){ //checks each index for similarity to target
+            String compare = sequenceArray[i];
+            String compareSubstr = compare.startSubstr((targetLength - minSim), targetLength);
+            if(compareSubstr == targetSubstr) {
+                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
+                target = compare; 
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            isComplete = true;
+        }
+    }
+}
+    
+ 
+
+
+
 
