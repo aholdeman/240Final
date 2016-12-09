@@ -30,9 +30,9 @@ using namespace std;
 
 
 
-void searchRight(Sequence target, int minSim, int length, Sequence *sequenceArray)    
+Sequence searchRight(Sequence target, int minSim, int length, Sequence *sequenceArray)    
 {
-     bool isComplete = false; //has it finished checking all of the indexes for available matches?
+    bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
         int targetLength = target.length();
         Sequence targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
@@ -44,9 +44,31 @@ void searchRight(Sequence target, int minSim, int length, Sequence *sequenceArra
             int j(0);
             while ((j + minSim) < compareLength) {
                 Sequence compareSubstr = compare.startSubstr(j, minSim+j);
-                cout << compareSubstr << endl;
                 if (compareSubstr == targetSubstr) {
-                    cout << "Found a match! "<< compareSubstr << endl;
+                    cout << "Comparing to: "<< compareSubstr << endl;
+                    
+                    minSim++;
+                    bool noMatch = false;
+                    while(noMatch == false)
+                    {
+                        //check for larger overlap
+                        targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
+                        compareSubstr = compare.startSubstr(j, minSim+j);
+                        if(compareSubstr == targetSubstr)
+                        {
+                            cout << "Found a BETTER match bc lorn ROX so here u go " << i << endl; 
+                            minSim++;
+                         }
+                         else
+                         {
+                            //too far, overlap is over
+                           noMatch = true;
+                        }   
+                    }
+                
+                    return searchRight(target, minSim, length, sequenceArray); 
+                    target = compare; 
+
                     j++;
                 } else {
                     j++;
@@ -58,9 +80,11 @@ void searchRight(Sequence target, int minSim, int length, Sequence *sequenceArra
             isComplete = true;
         }
     }
+    Sequence poop;
+    return poop;
 }
 
-void searchLeft(Sequence target, int minSim, int length, Sequence *sequenceArray)
+Sequence searchLeft(Sequence target, int minSim, int length, Sequence *sequenceArray)
 {
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
@@ -73,21 +97,49 @@ void searchLeft(Sequence target, int minSim, int length, Sequence *sequenceArray
             int compareLength = compare.length();
             int j(0);
             while ((j + minSim) < compareLength) {
-                
-                Sequence compareSubstr = compare.endSubstr((targetLength - minSim)-j, targetLength-j);
+                Sequence compareSubstr = compare.endSubstr((targetLength - minSim)-j, targetLength-j); //?
                 if (compareSubstr == targetSubstr) {
                     cout << "Comparing to: "<< compareSubstr << endl;
-                    j++;
-                } else {
-                    j++;
+                    
+                     minSim++; 
+                
+                bool noMatch = false;
+                while(noMatch == false)
+                {
+                    //check for larger overlap
+                    targetSubstr = target.startSubstr(0, minSim);
+                    //this needs to change
+                    compareSubstr = compare.endSubstr((targetLength - minSim)-j, targetLength-j);
+                    if(compareSubstr == targetSubstr)
+                    {
+                        cout << "Found a BETTER match bc lorn ROX so here u go " << i << endl; 
+                        minSim++;
+                    }
+                    else
+                    {
+                        //too far, overlap is over
+                        noMatch = true;
+                    }
                 }
+                return searchLeft(target, minSim, length, sequenceArray); 
+                
+                target = compare; 
+                j++;
             }
-            i++;
-        } 
-        if (i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+                
+            else {
+                    j++;
+            }
+                i++;
+        }
+        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
             isComplete = true;
         }
     }
+    Sequence poop;
+    return poop;
+    
+    }                 
 }
     
  int main(int argc, char** argv) {
@@ -136,12 +188,13 @@ void searchLeft(Sequence target, int minSim, int length, Sequence *sequenceArray
         length++;
     }
     Sequence target = sequenceArray[length-1]; //last line is blank
+
     int minSim(2); //basis for minimum characters similar
-       
+       return 0;
     //calling search functions
-    searchRight(target, minSim, length, sequenceArray); 
-    searchLeft(target, minSim, length, sequenceArray);
-    return 0;
+    //searchRight(target, minSim, length, sequenceArray); 
+    //searchLeft(target, minSim, length, sequenceArray);
+       cout << "hello";
 }
 
 
