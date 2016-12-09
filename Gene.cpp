@@ -122,6 +122,7 @@ int Gene::findMaxOverlap(Sequence target, int minSim, Sequence compare, int j) {
 
 void Gene::searchLeft(Sequence target, int minSim)
 {
+    bool matchFound = false;
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
         int targetLength = target.length();
@@ -134,8 +135,9 @@ void Gene::searchLeft(Sequence target, int minSim)
             while ((j + minSim) < compareLength) {
                 Sequence compareSubstr = compare.endSubstr((targetLength - minSim)-j, targetLength-j); //?
                 if (compareSubstr == targetSubstr) {
-                    
-                     minSim++; 
+                    matchFound = true;
+                    minSim = findMaxOverlap(target, minSim, compare, j);
+                    target = compare; 
                 
                 bool noMatch = false;
                 while(noMatch == false)
@@ -175,8 +177,8 @@ void Gene::searchLeft(Sequence target, int minSim)
 }
 
 int Gene::findMaxOverlapLeft(Sequence target, int minSim, Sequence compare, int j) {
-    Sequence targetSubstr = target.endSubstr(0, minSim);
-    Sequence compareSubstr = compare.startSubstr((compare.length() - minSim)-j, compare.length()-j);
+    Sequence targetSubstr = target.startSubstr(0, minSim);
+    Sequence compareSubstr = compare.endSubstr((compare.length() - minSim)-j, compare.length()-j);
     if(compareSubstr == targetSubstr) { 
         return findMaxOverlapLeft(target, minSim++, compareSubstr, j++);
      } else {
