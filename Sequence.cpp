@@ -282,12 +282,12 @@ Sequence Sequence::operator -(const Sequence &two) {
 }
 
 //acts as the print function
-ostream & operator <<(ostream &out, const Sequence &two) {
+ofstream & operator <<(ofstream &ofs, const Sequence &two) {
+   //ofstream ofs;
     for (int i=0;i<two._length;i++) {
-        cout << two[i];
+        ofs << two[i];
     }
-    
-    return out;
+    return ofs;
 }
 
 //should take in a char[] and return its size by counting all the chars that occur before the terminal character.
