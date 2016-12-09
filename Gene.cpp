@@ -69,6 +69,7 @@ void Gene::search(int minOverlap) {
 
 void Gene::searchRight(Sequence target, int minOverlap)    
 {   
+    cout << "Searching right" << endl;
     Sequence originalTarget = target;
     
     Sequence compare;
