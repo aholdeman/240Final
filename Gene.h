@@ -17,8 +17,6 @@
 #include <fstream>
 #include "Sequence.h"
 #include <iostream>
-
-
 using namespace std;
 
 class Gene {
@@ -35,7 +33,8 @@ public:
     
     virtual ~Gene();
 private:
-    Sequence *sequenceArray;
+    Sequence *sequenceArray;  
+    
     Sequence *rightArray;
     Sequence *leftArray;
     int rightArrayIndex;

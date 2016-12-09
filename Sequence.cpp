@@ -243,32 +243,27 @@ Sequence Sequence::operator +(const Sequence &two) {
 }
 
 Sequence Sequence::operator -(const Sequence &two) {
-    cout << "target's length: " << _length << endl;
-    for (int i=0;i<_length;i++) {
-        cout << data[i];
-    }
-    cout << endl;
-    
-    cout << "target Substr length: " << two._length << endl;
-    for (int i=0;i<_length;i++) {
-        cout << two.data[i];
-    }
-    cout << endl;
-    
-     if (!strstr(this->data,two.data)) {
+    /* if (!strstr(this->data,two.data)) {
         cout << "Error: cannot subtract the subsequence because it is not in the sequence" << endl;
         exit(1);
-    }
-    int newSize = _length - two._length;
+    }*/
+    int newSize = _length - two._length ;
+    
     char temp[newSize];
     int startIndex = find(two.data, 0);
+    
+    cout << "NEW SEQUENCE WO OVERLAP" <<endl;
     for(int i=0;i<newSize;i++) {
+        
         if(i==startIndex) { // when it finds substring, skips over it
             i+=two._length;
             continue;
         }
         temp[i] = data[i];
+        cout << temp[i];
     }
+    cout << endl;
+    cout << "did it make it?" << endl;
     Sequence newSequence(temp, newSize);
     return newSequence;
 }
