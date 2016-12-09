@@ -18,6 +18,7 @@
 #include "Sequence.h"
 #include <iostream>
 
+
 using namespace std;
 
 class Gene {
@@ -28,15 +29,12 @@ public:
     
     void search();
     void compare(Sequence &second);
-    bool empty(); //checks if tree is empty through root
     int getLength();
-    Sequence at(int index);
+    void print(ofstream &ofs);
     
     virtual ~Gene();
 private:
     Sequence *sequenceArray;
-    Sequence *matchesArray;
-    int matchesArrayIndex;
     int length;
 };
 

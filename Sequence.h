@@ -1,4 +1,5 @@
-/*File:   Sequence.h
+/* 
+ * File:   Sequence.h
  * Author: PhoebeNgo
  * Function: Create custom Sequence class
  * Input: char array
@@ -7,10 +8,11 @@
  * Created on October 29, 2016, 6:47 PM
  */
 
-#ifndef STRING_H
-#define STRING_H
+#ifndef SEQUENCE_H
+#define SEQUENCE_H
 
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 using namespace std;
 
@@ -30,7 +32,6 @@ public:
     bool empty() const;
     char at(const int index) const; 
     int find(const char substr[], int startIndex);
-    bool contains(const char substr[]);
     bool equal(const Sequence &two);
     bool add(Sequence &two); 
     void print() const; 
@@ -41,10 +42,11 @@ public:
     Sequence operator+(const Sequence& two); 
     Sequence operator-(const Sequence& two);
     virtual ~Sequence();
+    
 private:
     int _length; //this should contain the actual size of the char[] housed within the object.
     char *data; // is the name of the pointer that points to the data structure which will hold the content of the string.
     int getCharArraySize(const char arr[]); //this function should take in a char[] and return its size by counting all the chars that occur before the terminal character.
 };
 
-#endif /* STRING_H */
+#endif /* SEQUENCE_H */

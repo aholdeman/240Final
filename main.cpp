@@ -15,7 +15,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-  //  clock_t executionTime = clock(); // calculates execution time
+  clock_t executionTime = clock(); // calculates execution time
    
 //    //if the user does not input an input text file
 //    if (argc != 3) {
@@ -34,19 +34,16 @@ int main(int argc, char** argv) {
     }
     
     Gene myGene(infile);
- //   myGene.print(outfile);
+    myGene.search();
     outfile.open("testOutput.txt");
     if (outfile.fail()) {
-        cout << "There's an error you dingus!!!!!!!!!" << endl;
+        cout << "Error: print out not successful" << endl;
         exit(1);
     }
-    
-
-
+    myGene.print(outfile);
     
     infile.close();
     outfile.close();
- //   printf("Execution time: %.2fs\n", (double)(clock() - executionTime)/CLOCKS_PER_SEC);
+    printf("Execution time: %.4fs\n", (double)(clock() - executionTime)/CLOCKS_PER_SEC);
     return 0;
 }
-
