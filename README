@@ -6,3 +6,6 @@ Using the command-line, the user will be instructed in how to enter the argument
 Further information and context can be found in our Requirements Document and Final Report. 
 Upon completion of the program, the resulting sequence is sent to an output file, accessible to the user. 
 Assumption is made that the user has access to and knowledge of the command-line. :)
+
+To run: "make", which will compile the .cpp files into an executable "240GeneFinal", then run the executable
+                       ./240GeneFinal <name of input file> <name of output file> <minimum overlap>
