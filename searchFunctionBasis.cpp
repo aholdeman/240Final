@@ -20,17 +20,126 @@
 
 #include <iostream>
 #include <fstream>
-#include "String.h"
+#include "Sequence.h"
 
 using namespace std;
 
 /*
  * 
  */
-int main(int argc, char** argv) {
+
+
+
+Sequence searchRight(Sequence target, int minSim, int length, Sequence *sequenceArray)    
+{
+    
+    bool isComplete = false; //has it finished checking all of the indexes for available matches?
+    while (!isComplete) {
+        int targetLength = target.length(); 
+        Sequence targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
+       
+        int i(0);
+        while(i < length){ //checks each index for similarity to target
+            Sequence compare = sequenceArray[i];
+            Sequence compareSubstr = compare.startSubstr(0, minSim);
+            if(compareSubstr == targetSubstr) {
+                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
+                cout << "lets find a better match lolz" << endl;
+                //need to keep searching for better match
+                //add 1 to the minSim, which adds 1 to targetSubstr
+                //how to just search the found compare string?
+                minSim++; 
+                
+                bool noMatch = false;
+                while(noMatch == false)
+                {
+                    //check for larger overlap
+                    targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
+                    compareSubstr = compare.startSubstr(0, minSim);
+                    if(compareSubstr == targetSubstr)
+                    {
+                        cout << "Found a BETTER match bc lorn ROX so here u go " << i << endl; 
+                        minSim++;
+                    }
+                    else
+                    {
+                        //too far, overlap is over
+                        noMatch = true;
+                    }
+                }
+                
+                return searchRight(target, minSim, length, sequenceArray); 
+                
+                
+                target = compare; 
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            isComplete = true;
+        }
+    }
+}
+
+Sequence searchLeft(Sequence target, int minSim, int length, Sequence *sequenceArray)
+{
+    bool isComplete = false; //has it finished checking all of the indexes for available matches?
+    while (!isComplete) {
+        int targetLength = target.length(); 
+        Sequence targetSubstr = target.startSubstr((0), minSim); //left section of the target to check for
+       
+        int i(0);
+        while(i < length){ //checks each index for similarity to target
+            Sequence compare = sequenceArray[i];
+            Sequence compareSubstr = compare.endSubstr((targetLength - minSim), targetLength);
+            if(compareSubstr == targetSubstr) {
+                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
+                cout << "lets find a better match lolz" << endl;
+                //need to keep searching for better match
+                //add 1 to the minSim, which adds 1 to targetSubstr
+                //how to just search the found compare string?
+                minSim++; 
+                
+                bool noMatch = false;
+                while(noMatch == false)
+                {
+                    //check for larger overlap
+                    targetSubstr = target.startSubstr(0, minSim);
+                    compareSubstr = compare.endSubstr((targetLength - minSim), targetLength);
+                    if(compareSubstr == targetSubstr)
+                    {
+                        cout << "Found a BETTER match bc lorn ROX so here u go " << i << endl; 
+                        minSim++;
+                    }
+                    else
+                    {
+                        //too far, overlap is over
+                        noMatch = true;
+                    }
+                }
+                
+                return searchLeft(target, minSim, length, sequenceArray); 
+                
+                target = compare; 
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            isComplete = true;
+        }
+    }
+}
+    
+ int main(int argc, char** argv) {
     ifstream infile; //initializes the file reader
 
-    infile.open("10000input"); //opens the specified file
+    infile.open("poop"); //opens the specified file
 
     if (infile.fail()) { //if there's an error
         cout << "Error opening the file" << argv[1] << "\n";
@@ -47,8 +156,8 @@ int main(int argc, char** argv) {
         length++;
     }
     int newArrayIndex = length-1;
-    String *sequenceArray;
-    sequenceArray = new String[length];
+    Sequence *sequenceArray;
+    sequenceArray = new Sequence[length];
 
 
     length = 0;
@@ -68,73 +177,18 @@ int main(int argc, char** argv) {
                 exit(1);
             }
         }
-        String sequence = String(charInput, i);
+        Sequence sequence = Sequence(charInput, i);
         sequenceArray[length] = charInput;
         length++;
     }
-    String target = sequenceArray[length-1]; //last line is blank
-    int minSim(20); //basis for minimum characters similar
+    Sequence target = sequenceArray[length-1]; //last line is blank
+    int minSim(2); //basis for minimum characters similar
        return 0;
     //calling search functions
-    searchRight(target, minSim, length, sequenceArray ); 
+    searchRight(target, minSim, length, sequenceArray); 
     searchLeft(target, minSim, length, sequenceArray);
-}
-
-
-void searchRight(String target, int minSim, int length, String *sequenceArray)    
-{
     
-    bool isComplete = false; //has it finished checking all of the indexes for available matches?
-    while (!isComplete) {
-        int targetLength = target.length(); 
-        String targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
-       
-        int i(0);
-        while(i < length){ //checks each index for similarity to target
-            String compare = sequenceArray[i];
-            String compareSubstr = compare.startSubstr(0, minSim);
-            if(compareSubstr == targetSubstr) {
-                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
-                target = compare; 
-                break;
-            }
-            else {
-                i++;
-            }
-        }
-        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
-            isComplete = true;
-        }
-    }
 }
-
-void searchLeft(String target, int minSim, int length, String *sequenceArray)
-{
-    bool isComplete = false; //has it finished checking all of the indexes for available matches?
-    while (!isComplete) {
-        int targetLength = target.length(); 
-        String targetSubstr = target.endSubstr((0), minSim); //left section of the target to check for
-       
-        int i(0);
-        while(i < length){ //checks each index for similarity to target
-            String compare = sequenceArray[i];
-            String compareSubstr = compare.startSubstr((targetLength - minSim), targetLength);
-            if(compareSubstr == targetSubstr) {
-                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
-                target = compare; 
-                break;
-            }
-            else {
-                i++;
-            }
-        }
-        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
-            isComplete = true;
-        }
-    }
-}
-    
- 
 
 
 
