@@ -152,7 +152,6 @@ void Gene::searchLeft(Sequence target, int minSim) {
         }
         if (i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
             if (matchFound == true) {
-                cout << "leftArray:  " << endl; 
                 leftArray[leftArrayIndex].print();
                 target = compare;
                 searchLeft(target, minSim);
