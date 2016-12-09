@@ -32,22 +32,21 @@ using namespace std;
 
 Sequence searchRight(Sequence target, int minSim, int length, Sequence *sequenceArray)    
 {
-    String target = sequenceArray[length-1]; //last line is blank
-    int minSim(20); //basis for minimum characters similar
-    bool isComplete = false; //has it finished checking all of the indexes for available matches?
+     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
         int targetLength = target.length();
-        String targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
+        Sequence targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
         cout << "Target: " << targetSubstr << endl;
         int i(0);
         while (i < length) { //checks each index for similarity to target
-            String compare = sequenceArray[i];
+            Sequence compare = sequenceArray[i];
             int compareLength = compare.length();
             int j(0);
             while ((j + minSim) < compareLength) {
-                String compareSubstr = compare.startSubstr(j, minSim+j);
+                Sequence compareSubstr = compare.startSubstr(j, minSim+j);
+                cout << compareSubstr << endl;
                 if (compareSubstr == targetSubstr) {
-                    cout << "Comparing to: "<< compareSubstr << endl;
+                    cout << "Found a match! "<< compareSubstr << endl;
                     j++;
                 } else {
                     j++;
@@ -65,49 +64,27 @@ Sequence searchLeft(Sequence target, int minSim, int length, Sequence *sequenceA
 {
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
-        int targetLength = target.length(); 
-        Sequence targetSubstr = target.startSubstr((0), minSim); //left section of the target to check for
-       
+        int targetLength = target.length();
+        Sequence targetSubstr = target.startSubstr(0, minSim);
+        cout << "Target: " << targetSubstr << endl;
         int i(0);
-        while(i < length){ //checks each index for similarity to target
+        while (i < length) { //checks each index for similarity to target
             Sequence compare = sequenceArray[i];
-            Sequence compareSubstr = compare.endSubstr((targetLength - minSim), targetLength);
-            if(compareSubstr == targetSubstr) {
-                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
-                cout << "lets find a better match lolz" << endl;
-                //need to keep searching for better match
-                //add 1 to the minSim, which adds 1 to targetSubstr
-                //how to just search the found compare string?
-                minSim++; 
+            int compareLength = compare.length();
+            int j(0);
+            while ((j + minSim) < compareLength) {
                 
-                bool noMatch = false;
-                while(noMatch == false)
-                {
-                    //check for larger overlap
-                    targetSubstr = target.startSubstr(0, minSim);
-                    compareSubstr = compare.endSubstr((targetLength - minSim), targetLength);
-                    if(compareSubstr == targetSubstr)
-                    {
-                        cout << "Found a BETTER match bc lorn ROX so here u go " << i << endl; 
-                        minSim++;
-                    }
-                    else
-                    {
-                        //too far, overlap is over
-                        noMatch = true;
-                    }
+                Sequence compareSubstr = compare.endSubstr((targetLength - minSim)-j, targetLength-j);
+                if (compareSubstr == targetSubstr) {
+                    cout << "Comparing to: "<< compareSubstr << endl;
+                    j++;
+                } else {
+                    j++;
                 }
-                
-                return searchLeft(target, minSim, length, sequenceArray); 
-                
-                target = compare; 
-                break;
             }
-            else {
-                i++;
-            }
-        }
-        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            i++;
+        } 
+        if (i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
             isComplete = true;
         }
     }
