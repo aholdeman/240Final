@@ -15,45 +15,41 @@ Gene::Gene() {
 }
 
 Gene::Gene(ifstream& infile) {
-    length = matchesArrayIndex = 0;    
-    string inputLine = " ";
+    length = 0;    
+    string Input = " ";
+    char charInput[256] = " ";
     //finds how many sequences there are in file
     while(!infile.eof()) { //while the scanner is not at the end of the file
-            getline(infile, inputLine); //skips the first line that will be an ID
-            getline (infile, inputLine); //reads line and assigns it to the string inputLine
+            getline(infile, Input); //skips the first line that will be an ID
+            getline (infile, Input); //reads line and assigns it to the string Input
             length++;
     }
-    sequenceArray = new Sequence[length];
-    matchesArray = new Sequence[length]; //will stay empty for now, eventually will fill up with values
-    int counter = length - 2;
-    char charinputLine[256] = " ";
-   
+    
     infile.clear();
     infile.seekg(0);
-    int sequenceIndex = 0;
-    while(sequenceIndex <= counter){
-            getline(infile, inputLine); //skips sequence ID
-            getline (infile, inputLine); // this is the actual sequence info
+
+    int counter = length - 1; //gets rid of blank space at the end of files
+    sequenceArray = new Sequence[length];
+    length = 0;
+    infile.clear();
+    infile.seekg(0);
+    while(length < counter){
+            getline(infile, Input);
+            getline (infile, Input); // this is the actual sequence info
             int i = 0;
-            while(inputLine[i] != '\0') {
-                    if(inputLine[i] == 'C' || inputLine[i] == 'A' || inputLine[i] == 'G' || inputLine[i] == 'T') {
-                            i++;
-                            charinputLine[i] = inputLine[i];
+            while(Input[i] != '\0') {
+                    if(Input[i] == 'C' || Input[i] == 'A' || Input[i] == 'G' || Input[i] == 'T') {    
+                        charInput[i] = Input[i];
+                        i++;
                     }
                     else {
                             cout << "Invalid input. Sequences must contain ONLY A, G, C, or T." << endl;
                             exit(1);
                     }
             }
-            sequenceArray[sequenceIndex] = charinputLine;
-            sequenceIndex++;
-    }
-    
-    //DELETEME
-    int i(0);
-    while(i <= length) {
-        cout << sequenceArray[i] << endl;
-        i++;
+            Sequence sequence = Sequence(charInput, i);
+            sequenceArray[length] = sequence;
+            length++;
     }
 }
 
@@ -106,14 +102,12 @@ void Gene::print(ofstream &outstream) {
 		cout << "There's an error." << endl;
 		exit(1);
 	}
-	 int newSequenceIndex = 0; 
-         while(newSequenceIndex <= length) { //prints to ouput file TEST with array
-             ofs << sequenceArray[newSequenceIndex] << endl;
-             newSequenceIndex++;
-	}
-        
-         ofs.close();
-
+	int i = 0; 
+   	 while(i < length) { //prints to ouput file TEST with array
+        ofs << sequenceArray[i] << endl;
+        i++;
+   }
+   ofs.close();
     }
 }
 
