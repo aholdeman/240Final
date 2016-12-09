@@ -99,21 +99,23 @@ void Gene::compare(Sequence &second) {
 
 }
 
-/*
+
 void Gene::print(ofstream &outstream) {
-    outstream.open("testOutput.txt");
-    if (outstream.fail()) {
-        cout << "There's an error you dingus!!!!!!!!!" << endl;
-        exit(1);
+	ofs.open("testOutput.txt"); //open output file
+	if(ofs.fail()){ //if there's an error
+		cout << "There's an error." << endl;
+		exit(1);
+	}
+	 int newSequenceIndex = 0; 
+         while(newSequenceIndex <= length) { //prints to ouput file TEST with array
+             ofs << sequenceArray[newSequenceIndex] << endl;
+             newSequenceIndex++;
+	}
+        
+         ofs.close();
+
     }
-    
-    int actualValuesInFile = length - 2;
-    int i(0);
-    while(i <= actualValuesInFile) {
-        cout << sequenceArray[i] << endl;
-        i++;
-    }
-}*/
+}
 
 Sequence Gene::at(int index) {
     return sequenceArray[index];
