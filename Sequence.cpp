@@ -252,7 +252,6 @@ Sequence Sequence::operator -(const Sequence &two) {
     char temp[newSize];
     int startIndex = find(two.data, 0);
     
-    cout << "NEW SEQUENCE WO OVERLAP" <<endl;
     for(int i=0;i<newSize;i++) {
         
         if(i==startIndex) { // when it finds substring, skips over it
