@@ -243,6 +243,18 @@ Sequence Sequence::operator +(const Sequence &two) {
 }
 
 Sequence Sequence::operator -(const Sequence &two) {
+    cout << "target's length: " << _length << endl;
+    for (int i=0;i<_length;i++) {
+        cout << data[i];
+    }
+    cout << endl;
+    
+    cout << "target Substr length: " << two._length << endl;
+    for (int i=0;i<_length;i++) {
+        cout << two.data[i];
+    }
+    cout << endl;
+    
      if (!strstr(this->data,two.data)) {
         cout << "Error: cannot subtract the subsequence because it is not in the sequence" << endl;
         exit(1);

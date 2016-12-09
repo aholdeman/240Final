@@ -27,14 +27,19 @@ public:
     Gene(ifstream & infile);
     Gene(const Gene& orig);
     
-    void search();
-    void compare(Sequence &second);
+    void search(int minOverlap);
+    void searchLeft(Sequence target, int minSim);
+    void searchRight(Sequence target, int minSim);
     int getLength();
     void print(ofstream &ofs);
     
     virtual ~Gene();
 private:
     Sequence *sequenceArray;
+    Sequence *rightArray;
+    Sequence *leftArray;
+    int rightArrayIndex;
+    int leftArrayIndex;
     int length;
 };
 

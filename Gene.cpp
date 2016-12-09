@@ -7,15 +7,19 @@
 
 #include "Gene.h"
 #include "Sequence.h"
-#include <iostream>
 
 Gene::Gene() {
     length = 0;
     sequenceArray = 0;
+    rightArray = 0;
+    rightArrayIndex = 0;
+    leftArray = 0;
+    leftArrayIndex;
 }
 
 Gene::Gene(ifstream& infile) {
-    length = 0;    
+    length = rightArrayIndex = 0;    
+    
     string Input = " ";
     char charInput[256] = " ";
     //finds how many sequences there are in file
@@ -24,12 +28,15 @@ Gene::Gene(ifstream& infile) {
             getline (infile, Input); //reads line and assigns it to the string Input
             length++;
     }
-    
+    leftArrayIndex = length; //sets left array index at the end and will decrement from there
     infile.clear();
     infile.seekg(0);
 
     int counter = length - 1; //gets rid of blank space at the end of files
     sequenceArray = new Sequence[length];
+    rightArray = new Sequence[length];
+    leftArray = new Sequence[length];
+    
     length = 0;
     infile.clear();
     infile.seekg(0);
@@ -53,67 +60,131 @@ Gene::Gene(ifstream& infile) {
     }
 }
 
-void Gene::search() {
-    /*TODO 
-     1. Go to last index, use last index sequence as target sequence
-     2. Go to first index, cycle through until it finds a best match
-     3. if best match is found, store the whole target sequence into new array
-     3b. deletes the part that matches from target sequence
-     4. move found match into the last index sequence's place
-     5. */
-    
-    Sequence target = sequenceArray[length-1]; //last line is blank
-    int minSim(20); //basis for minimum characters similar
+void Gene::search(int minOverlap) {
+    Sequence target = sequenceArray[length-1];
+    searchRight(target, minOverlap);
+    searchLeft(target,  minOverlap);
+}
+
+void Gene::searchRight(Sequence target, int minSim)    
+{
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
-    
     while (!isComplete) {
-        int targetLength = target.length(); 
+        int targetLength = target.length();
         Sequence targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
-       
         int i(0);
-        while(i < length){ //checks each index for similarity to target
-            Sequence compare = sequenceArray[i]; //sequence it is currently looking at
-            Sequence compareSubstr = compare.startSubstr(0, minSim);
-            if(compareSubstr == targetSubstr) {
-                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
-               
-                target -= targetSubstr; // gets rid of target substring from target
+        while (i < length) { //checks each index for similarity to target
+            Sequence compare = sequenceArray[i];
+            int compareLength = compare.length();
+            int j(0);
+            while ((j + minSim) < compareLength) {
+                Sequence compareSubstr = compare.startSubstr(j, minSim+j);
+                if (compareSubstr == targetSubstr) {
+                    
+                    minSim++;
+                    bool noMatch = false;
+                    while(noMatch == false)
+                    {
+                        //check for larger overlap
+                        targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
+                        compareSubstr = compare.startSubstr(j, minSim+j);
+                        if(compareSubstr == targetSubstr)
+                        {
+                            cout << "Found a BETTER match bc lorn ROX so here u go " << i << endl; 
+                            minSim++;
+                         }
+                         else
+                         {
+                            //too far, overlap is over
+                           noMatch = true;
+                        }   
+                    }
                 
-                target = compare; 
-                break;
+                    searchRight(target, minSim); 
+                    target = compare; 
+
+                    j++;
+                } else {
+                    j++;
+                }
             }
-            else {
-                i++;
-            }
-        }
-        //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            i++;
+        } 
+        if (i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
             isComplete = true;
+            cout << "u printing?" << endl;
+            target.print();
+            cout << "target length:" << target.length() << endl;
+            targetSubstr.print();
+            cout << "target substring length: " << targetSubstr.length() << endl;
+            rightArray[rightArrayIndex++] = (target - targetSubstr);
+        }
     }
 }
 
-void Gene::compare(Sequence &second) {
-
+void Gene::searchLeft(Sequence target, int minSim)
+{
+    bool isComplete = false; //has it finished checking all of the indexes for available matches?
+    while (!isComplete) {
+        int targetLength = target.length();
+        Sequence targetSubstr = target.startSubstr(0, minSim);
+        int i(0);
+        while (i < length) { //checks each index for similarity to target
+            Sequence compare = sequenceArray[i];
+            int compareLength = compare.length();
+            int j(0);
+            while ((j + minSim) < compareLength) {
+                Sequence compareSubstr = compare.endSubstr((targetLength - minSim)-j, targetLength-j); //?
+                if (compareSubstr == targetSubstr) {
+                    
+                     minSim++; 
+                
+                bool noMatch = false;
+                while(noMatch == false)
+                {
+                    //check for larger overlap
+                    targetSubstr = target.startSubstr(0, minSim);
+                    //this needs to change
+                    compareSubstr = compare.endSubstr((targetLength - minSim)-j, targetLength-j);
+                    if(compareSubstr == targetSubstr)
+                    {
+                        cout << "Found a BETTER match bc lorn ROX so here u go " << i << endl; 
+                        minSim++;
+                    }
+                    else
+                    {
+                        //too far, overlap is over
+                        noMatch = true;
+                    }
+                }
+                searchLeft(target, minSim); 
+                
+                target = compare; 
+                j++;
+            }
+                
+            else {
+                    j++;
+            }
+                i++;
+        }
+        if(i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            isComplete = true;
+           leftArray[leftArrayIndex--] = (target - targetSubstr);
+        }
+    }
+   }                 
 }
 
-
-void Gene::print(ofstream &outstream) {
-	ofs.open("testOutput.txt"); //open output file
-	if(ofs.fail()){ //if there's an error
-		cout << "There's an error." << endl;
-		exit(1);
-	}
-	int i = 0; 
-   	 while(i < length) { //prints to ouput file TEST with array
+void Gene::print(ofstream &ofs) {
+    int i = 0; 
+    while(i < length) { //prints to ouput file TEST with array
         ofs << sequenceArray[i] << endl;
         i++;
    }
    ofs.close();
-    }
-}
 
-Sequence Gene::at(int index) {
-    return sequenceArray[index];
-}
+} 
 
 int Gene::getLength() {
     return length;
