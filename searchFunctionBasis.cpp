@@ -30,7 +30,7 @@ using namespace std;
 
 
 
-Sequence searchRight(Sequence target, int minSim, int length, Sequence *sequenceArray)    
+void searchRight(Sequence target, int minSim, int length, Sequence *sequenceArray)    
 {
      bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
@@ -60,7 +60,7 @@ Sequence searchRight(Sequence target, int minSim, int length, Sequence *sequence
     }
 }
 
-Sequence searchLeft(Sequence target, int minSim, int length, Sequence *sequenceArray)
+void searchLeft(Sequence target, int minSim, int length, Sequence *sequenceArray)
 {
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
@@ -137,11 +137,11 @@ Sequence searchLeft(Sequence target, int minSim, int length, Sequence *sequenceA
     }
     Sequence target = sequenceArray[length-1]; //last line is blank
     int minSim(2); //basis for minimum characters similar
-       return 0;
+       
     //calling search functions
     searchRight(target, minSim, length, sequenceArray); 
     searchLeft(target, minSim, length, sequenceArray);
-    
+    return 0;
 }
 
 
