@@ -66,25 +66,27 @@ void Gene::search(int minOverlap) {
     searchLeft(target,  minOverlap);
 }
 
-void Gene::searchRight(Sequence target, int minSim)    
+void Gene::searchRight(Sequence target, int minOverlap)    
 {
- bool matchFound = false;
+    bool YOTHEREISAMATCH = false;
+    bool matchFound = false;
     Sequence compare;
     cout << "searching right ... " << endl;
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
         int targetLength = target.length();
-        Sequence targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
+        Sequence targetSubstr = target.endSubstr((targetLength - minOverlap), targetLength);
         int i(0);
         while (i < length) { //checks each index for similarity to target
             Sequence compare = sequenceArray[i];
             int compareLength = compare.length();
             int j(0);
-            while ((j + minSim) < compareLength) {
-                Sequence compareSubstr = compare.startSubstr(j, minSim+j);
+            while ((j + minOverlap) < compareLength) {
+                Sequence compareSubstr = compare.startSubstr(j, minOverlap+j);
                 if (compareSubstr == targetSubstr) {
                     matchFound = true;
-                    minSim = findMaxOverlap(target, minSim, compare, j);
+                    YOTHEREISAMATCH = true;
+                    minOverlap = findMaxOverlap(target, minOverlap, compare, j);
                     target = compare; 
                 } else { //if substring in currently looked at sequence is not equal to target subsequence, move foward
                     j++;
@@ -92,20 +94,19 @@ void Gene::searchRight(Sequence target, int minSim)
             }
             if (matchFound == true)
                 break;
-                i++; // if target subsequence not found in this sequence, moves on to next sequence
+            i++; // if target subsequence not found in this sequence, moves on to next sequence
         }
-        if (i >= length) { //if it's gotten through all the sequences and can't find a match, that will be the end of the completed sequence
-            isComplete = true;
-   //         if (matchFound == true)
-            sequenceArray[length--] = (target-targetSubstr) + compare;
-//            if (i==length) {
-//                break;
-//            }
-//            target.print();
-//            cout << "target length:" << target.length() << endl;
-//            targetSubstr.print();
-//            cout << "target substring length: " << targetSubstr.length() << endl;
-//            rightArray[rightArrayIndex++] = (target - targetSubstr);
+        if (i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            if(YOTHEREISAMATCH){
+             
+            rightArray[rightArrayIndex++] = (target-targetSubstr);
+            target = compare;
+            searchRight(target, minOverlap);
+            }
+            else {
+                rightArray[rightArrayIndex++] = (target-targetSubstr);
+                isComplete = true;
+            }
         }
     }
 }
