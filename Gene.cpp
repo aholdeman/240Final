@@ -72,7 +72,6 @@ void Gene::searchRight(Sequence target, int minOverlap)
     Sequence originalTarget = target;
     
     Sequence compare;
-    cout << "searching right ... " << endl;
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
         bool matchFound = false; 
@@ -89,7 +88,6 @@ void Gene::searchRight(Sequence target, int minOverlap)
                     matchFound = true;
                     rightArray[rightArrayIndex++] = (target-targetSubstr);
                     //sends current overlap found to keep track
-//                    minOverlap = findMaxOverlapRight(target, minOverlap, compare, j);
                     target = compare; 
                     break;
                 } else { //if substring in currently looked at sequence is not equal to target subsequence, move foward
@@ -97,7 +95,6 @@ void Gene::searchRight(Sequence target, int minOverlap)
                 }
             }
             if (matchFound == true) {
-                cout << "Match found" << endl;
                 break;
             }
             i++; // if target subsequence not found in this sequence, moves on to next sequence
@@ -118,22 +115,6 @@ void Gene::searchRight(Sequence target, int minOverlap)
     }
 }
 
-/*
-//finds the maximum overlap between target and current Sequence index
-int Gene::findMaxOverlapRight(Sequence target, int minSim, Sequence compare, int j) {
-    //grabs end section of target Sequence for comparison
-    Sequence targetSubstr = target.endSubstr((target.length() - minSim), target.length());
-    //increments through current compare Sequence to find overlap
-    Sequence compareSubstr = compare.startSubstr(j, minSim+j);
-    if(compareSubstr == targetSubstr) { 
-        return findMaxOverlapRight(target, minSim++, compareSubstr, j);
-        //recursively calls with an increase to shift farther left into the compare Sequence
-     } else {
-     //if not a match anymoe, needs to go back to last matched overlap (max)
-        return minSim-1;
-    }
-}*/
-
 void Gene::searchLeft(Sequence target, int minSim) {
     Sequence compare;
    
@@ -144,12 +125,10 @@ void Gene::searchLeft(Sequence target, int minSim) {
         int targetLength = target.length();
         //grabs beginning of target Sequence to create left side of completed Sequence
         Sequence targetSubstr = target.startSubstr(0, minSim);
-        cout << "target substring: ";
         targetSubstr.print();
         int i(0);
         while (i < length) { //checks each index for similarity to target
             Sequence compare = sequenceArray[i];
-            cout << "compare sequence: ";
             compare.print();
             int compareLength = compare.length();
             int j(0);
@@ -157,10 +136,8 @@ void Gene::searchLeft(Sequence target, int minSim) {
                 Sequence compareSubstr = compare.endSubstr((targetLength - minSim) - j, targetLength - j); //?
                 if (compareSubstr == targetSubstr) {
                     matchFound = true;
-                    cout << "GOT TO MATCH";
                     leftArray[leftArrayIndex++] = (target-targetSubstr);
                     //sends overlap to increment until the maximum overlap in current Sequence is found
- //                   minSim = findMaxOverlapLeft(target, minSim, compare, j);
                     target = compare;
                     break;
                 } else {
@@ -168,14 +145,13 @@ void Gene::searchLeft(Sequence target, int minSim) {
                 }
             }
             if (matchFound == true) {
-                cout << "MATCH FOUND" << endl;
+    
                 break;
             }
             i++;
         }
         if (i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
             if (matchFound == true) {
- //               leftArray[leftArrayIndex++] = (target - targetSubstr); 
                 cout << "leftArray:  " << endl; 
                 leftArray[leftArrayIndex].print();
                 target = compare;
@@ -188,30 +164,6 @@ void Gene::searchLeft(Sequence target, int minSim) {
         }
     }
 }
-/*
-//takes overlap found in searchLeft and finds maximum overlap possible
-int Gene::findMaxOverlapLeft(Sequence target, int minSim, Sequence compare, int j) {
-    //increase range of overlap in target from left side
-    Sequence targetSubstr = target.startSubstr(0, minSim + j);
-    //increments through current compare Sequence to find overlap
-    Sequence compareSubstr = compare.endSubstr((compare.length() - minSim) - j, compare.length() - j);
-    if (compareSubstr == targetSubstr) {
-        //continues searching with an incremented minSim
-        cout << "if compareSubstr == targetSubstr" << endl;
-        return findMaxOverlapLeft(target, minSim++, compareSubstr, j);
-    } else {
-        cout << "if compareSubt != targetSubstr" << endl;;
-        targetSubstr = target.startSubstr(0, minSim - 1 + j);
-        cout << "target: " ;
-        target.print();
-        cout << "targetSubstr: ";
-        targetSubstr.print();
-        cout << "j: " << j;
-        leftArray[leftArrayIndex++] = (target - targetSubstr);
-        cout << "here?" << endl;
-        return minSim - 1; //max has been found
-    }
-}*/
 
 void Gene::print(ofstream &ofs) {
     int i(length);
