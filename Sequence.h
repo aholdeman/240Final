@@ -15,7 +15,7 @@
 using namespace std;
 
 class Sequence {
-     friend ostream & operator<<(ostream &, const Sequence &);
+     friend ofstream & operator<<(ofstream &, const Sequence &);
      
 public:
     Sequence();
