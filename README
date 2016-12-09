@@ -7,5 +7,5 @@ Further information and context can be found in our Requirements Document and Fi
 Upon completion of the program, the resulting sequence is sent to an output file, accessible to the user. 
 Assumption is made that the user has access to and knowledge of the command-line. :)
 
-To run: "make", which will compile the .cpp files into an executable "240GeneFinal", then run the executable
+To run: "make", which will compile the .cpp files into an executable "240GeneFinal", then run the executable as follows:
                        ./240GeneFinal <name of input file> <name of output file> <minimum overlap>
