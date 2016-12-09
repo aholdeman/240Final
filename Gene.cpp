@@ -66,18 +66,19 @@ void Gene::search(int minOverlap) {
 }
 
 void Gene::searchRight(Sequence target, int minOverlap) {
-   
-    Sequence compare;
+
+    
     cout << "searching right ... " << endl;
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
-         bool YOTHEREISAMATCH = false;
+        Sequence compare;
+        bool YOTHEREISAMATCH = false;
         bool matchFound = false;
         int targetLength = target.length();
         Sequence targetSubstr = target.endSubstr((targetLength - minOverlap), targetLength);
         int i(0);
         while (i < length) { //checks each index for similarity to target
-            Sequence compare = sequenceArray[i];
+            compare = sequenceArray[i];
             int compareLength = compare.length();
             int j(0);
             while ((j + minOverlap) < compareLength) {
@@ -86,7 +87,8 @@ void Gene::searchRight(Sequence target, int minOverlap) {
                     matchFound = true;
                     YOTHEREISAMATCH = true;
                     minOverlap = findMaxOverlap(target, minOverlap, compare, j);
-                    target = compare;
+                    //target = compare;
+                    break;
                 } else { //if substring in currently looked at sequence is not equal to target subsequence, move foward
                     j++;
                 }
@@ -102,7 +104,7 @@ void Gene::searchRight(Sequence target, int minOverlap) {
                 target = compare;
                 searchRight(target, minOverlap);
             } else {
-                rightArray[rightArrayIndex++] = (target);
+                rightArray[rightArrayIndex++] = (compare);
                 isComplete = true;
             }
         }
@@ -120,18 +122,20 @@ int Gene::findMaxOverlap(Sequence target, int minSim, Sequence compare, int j) {
 }
 
 void Gene::searchLeft(Sequence target, int minSim) {
-    Sequence compare;
-   
+
+
     cout << "searching left nao" << endl;
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
-         bool matchFound = false;
+        Sequence compare;
+        bool matchFound = false;
         bool YOTHEREISAMATCH = false;
         int targetLength = target.length();
         Sequence targetSubstr = target.startSubstr(0, minSim);
         int i(0);
-        while (i < length) { //checks each index for similarity to target
-            Sequence compare = sequenceArray[i];
+        while (i < length) { 
+            //checks each index for similarity to target
+            compare = sequenceArray[i];
             int compareLength = compare.length();
             int j(0);
             while ((j + minSim) < compareLength) {
@@ -140,27 +144,27 @@ void Gene::searchLeft(Sequence target, int minSim) {
                     matchFound = true;
                     YOTHEREISAMATCH = true;
                     minSim = findMaxOverlapLeft(target, minSim, compare, j);
-                    cout << "I'm back" << endl;
-                    cout << minSim << endl;
-
-                    target = compare;
+                    cout << "going here " << endl;
+                    break;
                 } else {
                     j++;
                 }
             }
             if (matchFound == true) {
-                cout << "DDDDD" << endl;
+                cout << "to here" << endl;
                 break;
             }
             i++;
         }
         if (i >= length) { //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
             if (YOTHEREISAMATCH) {
+                cout << "HERE?" << endl;
                 leftArray[leftArrayIndex++] = (target - targetSubstr);
                 target = compare;
                 searchLeft(target, minSim);
             } else {
-                leftArray[leftArrayIndex++] = (target);
+                cout << "OR HERE" << endl;
+                leftArray[leftArrayIndex++] = (compare);
                 isComplete = true;
             }
         }
@@ -170,7 +174,6 @@ void Gene::searchLeft(Sequence target, int minSim) {
 }
 
 int Gene::findMaxOverlapLeft(Sequence target, int minSim, Sequence compare, int j) {
-    cout << "Yo" << endl;
     Sequence targetSubstr = target.startSubstr(0, minSim + j);
     Sequence compareSubstr = compare.endSubstr((compare.length() - minSim) - j, compare.length() - j);
     if (compareSubstr == targetSubstr) {
