@@ -1,1 +1,0 @@
-This is the project that contains the code for our CSCE 240 Final Project, where we feed the program a file of fragmented DNA sequences, and the program searches for similarities between the fragments and combines them into one long DNA sequence. 
