@@ -15,46 +15,41 @@ Gene::Gene() {
 }
 
 Gene::Gene(ifstream& infile) {
-    length = 0;    
-    string Input = " ";
-    char charInput[256] = " ";
+    length = matchesArrayIndex = 0;    
+    string inputLine = " ";
     //finds how many sequences there are in file
     while(!infile.eof()) { //while the scanner is not at the end of the file
-            getline(infile, Input); //skips the first line that will be an ID
-            getline (infile, Input); //reads line and assigns it to the string Input
+            getline(infile, inputLine); //skips the first line that will be an ID
+            getline (infile, inputLine); //reads line and assigns it to the string inputLine
             length++;
     }
-    
-    infile.clear();
-    infile.seekg(0);
-
-    int counter = length - 2;
-    Sequence *sequenceArray;
     sequenceArray = new Sequence[length];
-
-
-    length = 0;
+    matchesArray = new Sequence[length]; //will stay empty for now, eventually will fill up with values
+    int counter = length - 2;
+    char charinputLine[256] = " ";
+   
     infile.clear();
     infile.seekg(0);
-    while(length <= counter){
-            getline(infile, Input);
-            getline (infile, Input); // this is the actual sequence info
+    int sequenceIndex = 0;
+    while(sequenceIndex <= counter){
+            getline(infile, inputLine); //skips sequence ID
+            getline (infile, inputLine); // this is the actual sequence info
             int i = 0;
-            while(Input[i] != '\0') {
-                    if(Input[i] == 'C' || Input[i] == 'A' || Input[i] == 'G' || Input[i] == 'T') {    
-                        charInput[i] = Input[i];
-                        i++;
+            while(inputLine[i] != '\0') {
+                    if(inputLine[i] == 'C' || inputLine[i] == 'A' || inputLine[i] == 'G' || inputLine[i] == 'T') {
+                            i++;
+                            charinputLine[i] = inputLine[i];
                     }
                     else {
                             cout << "Invalid input. Sequences must contain ONLY A, G, C, or T." << endl;
                             exit(1);
                     }
             }
-
-            sequenceArray[length] = charInput;
-            length++;
+            sequenceArray[sequenceIndex] = charinputLine;
+            sequenceIndex++;
     }
     
+    //DELETEME
     int i(0);
     while(i <= length) {
         cout << sequenceArray[i] << endl;
@@ -62,8 +57,46 @@ Gene::Gene(ifstream& infile) {
     }
 }
 
+void Gene::search() {
+    /*TODO 
+     1. Go to last index, use last index sequence as target sequence
+     2. Go to first index, cycle through until it finds a best match
+     3. if best match is found, store the whole target sequence into new array
+     3b. deletes the part that matches from target sequence
+     4. move found match into the last index sequence's place
+     5. */
+    
+    Sequence target = sequenceArray[length-1]; //last line is blank
+    int minSim(20); //basis for minimum characters similar
+    bool isComplete = false; //has it finished checking all of the indexes for available matches?
+    
+    while (!isComplete) {
+        int targetLength = target.length(); 
+        Sequence targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
+       
+        int i(0);
+        while(i < length){ //checks each index for similarity to target
+            Sequence compare = sequenceArray[i]; //sequence it is currently looking at
+            Sequence compareSubstr = compare.startSubstr(0, minSim);
+            if(compareSubstr == targetSubstr) {
+                cout << "Found a match at index " << i << endl; //not in final  code, just for now to make sure it's correct
+               
+                target -= targetSubstr; // gets rid of target substring from target
+                
+                target = compare; 
+                break;
+            }
+            else {
+                i++;
+            }
+        }
+        //if it's gotten through all the indexes and can't find a match, that will be the end of the completed sequence
+            isComplete = true;
+    }
+}
+
 void Gene::compare(Sequence &second) {
-    //TODO
+
 }
 
 /*
@@ -81,6 +114,10 @@ void Gene::print(ofstream &outstream) {
         i++;
     }
 }*/
+
+Sequence Gene::at(int index) {
+    return sequenceArray[index];
+}
 
 int Gene::getLength() {
     return length;

@@ -1,11 +1,10 @@
 /* 
- * File:   Sequence.cpp
+ * File: Sequence.cpp
  * Author: PhoebeNgo
  * Function: Create custom Sequence class
  * Input: char array
  * Output: Sequence Object
  * 
- * Created on October 29, 2016, 6:47 PM
  */
 
 #include "Sequence.h"
@@ -45,7 +44,7 @@ Sequence::Sequence(const Sequence& orig) {
 //constructor that takes in char array and length of char array
 Sequence::Sequence(char str[], const int length) {
     if (length < 0) {
-        cout << "invalid length" << endl;
+        cout << "Error: invalid length" << endl;
         exit(0);
     }
     _length = length;
@@ -57,7 +56,7 @@ Sequence::Sequence(char str[], const int length) {
 }
 
 Sequence Sequence::startSubstr(int begin, int end) {
-    Sequence subString;
+    Sequence subSequence;
     int indexSize = end-begin-1;
     char testSubstr[indexSize];
     int i(begin);
@@ -65,12 +64,12 @@ Sequence Sequence::startSubstr(int begin, int end) {
         testSubstr[i] = data[i];
         i++;
     }
-    subString = Sequence(testSubstr, i);
-    return subString;
+    subSequence = Sequence(testSubstr, i);
+    return subSequence;
 }
 
 Sequence Sequence::endSubstr(int begin, int end) {
-    Sequence subString;
+    Sequence subSequence;
     int indexSize = end-begin;
     char testSubstr[indexSize];
     int i(0);
@@ -79,8 +78,8 @@ Sequence Sequence::endSubstr(int begin, int end) {
         i++;
         begin++;
     }
-    subString = Sequence(testSubstr, i);
-    return subString;
+    subSequence = Sequence(testSubstr, i);
+    return subSequence;
 }
 
 //returns the length of the char[] inside the string class
@@ -114,7 +113,7 @@ char Sequence::at(const int index) const {
     return data[index];
 }
 
-//this method should search for substring in the char[] within the calling Sequence object starting from the startIndex.
+//this method should search for subsequence within the calling Sequence object starting from the startIndex.
 int Sequence::find(const char substr[], int startIndex) {
     int position(-1);
     int strSize = getCharArraySize(data);
@@ -177,6 +176,27 @@ bool Sequence::add(Sequence &two) {
     
     _length = length;
     return true;
+}
+
+bool Sequence::contains(const char substr[]) {
+    int position(-1);
+    int strSize = getCharArraySize(data);
+    int subStrSize = getCharArraySize(substr);
+    
+    for(int i=0;i<strSize;i++) {
+        if(data[i] == substr[0]) {
+            position = i;
+            for (int j=0;j<subStrSize;j++) {
+                 if(data[position+j] != substr[j]) {
+                     return false;
+                }
+                 if (data[subStrSize-1] == substr[j]) {
+                     return true;
+                 }
+            }
+        }
+    }
+    return false;
 }
 
 //prints out value
@@ -242,6 +262,25 @@ Sequence Sequence::operator +(const Sequence &two) {
     
 }
 
+Sequence Sequence::operator -(const Sequence &two) {
+     if (this->!contains(two.data)) {
+        cout << "Error: cannot subtract the subsequence because it is not in the sequence" << endl;
+        exit(1);
+    }
+    int newSize = _length - two._length;
+    char temp[newSize];
+    int startIndex = find(two.data, 0);
+    for(int i=0;i<newSize;i++) {
+        if(i==startIndex) { // when it finds substring, skips over it
+            i+=two.length;
+            continue;
+        }
+        temp[i] = data[i];
+    }
+
+    return new Sequence(temp, newSize);
+}
+
 //acts as the print function
 ostream & operator <<(ostream &out, const Sequence &two) {
     for (int i=0;i<two._length;i++) {
@@ -267,4 +306,3 @@ int Sequence::getCharArraySize(const char arr[]) {
 Sequence::~Sequence() {
     delete [] data;
 }
-
