@@ -74,17 +74,17 @@ void Gene::searchRight(Sequence target, int minSim)
     bool isComplete = false; //has it finished checking all of the indexes for available matches?
     while (!isComplete) {
         int targetLength = target.length();
-        Sequence targetSubstr = target.endSubstr((targetLength - minOverlap), targetLength);
+        Sequence targetSubstr = target.endSubstr((targetLength - minSim), targetLength);
         int i(0);
         while (i < length) { //checks each index for similarity to target
             Sequence compare = sequenceArray[i];
             int compareLength = compare.length();
             int j(0);
-            while ((j + minOverlap) < compareLength) {
-                Sequence compareSubstr = compare.startSubstr(j, minOverlap+j);
+            while ((j + minSim) < compareLength) {
+                Sequence compareSubstr = compare.startSubstr(j, minSim+j);
                 if (compareSubstr == targetSubstr) {
                     matchFound = true;
-                    minOverlap = findMaxOverlap(target, minOverlap, compare, j);
+                    minSim = findMaxOverlap(target, minSim, compare, j);
                     target = compare; 
                 } else { //if substring in currently looked at sequence is not equal to target subsequence, move foward
                     j++;
@@ -92,7 +92,7 @@ void Gene::searchRight(Sequence target, int minSim)
             }
             if (matchFound == true)
                 break;
-            i++; // if target subsequence not found in this sequence, moves on to next sequence
+                i++; // if target subsequence not found in this sequence, moves on to next sequence
         }
         if (i >= length) { //if it's gotten through all the sequences and can't find a match, that will be the end of the completed sequence
             isComplete = true;
@@ -173,6 +173,17 @@ void Gene::searchLeft(Sequence target, int minSim)
     }
    }                 
 }
+
+int Gene::findMaxOverlapLeft(Sequence target, int minSim, Sequence compare, int j) {
+    Sequence targetSubstr = target.endSubstr(0, minSim);
+    Sequence compareSubstr = compare.startSubstr((compare.length() - minSim)-j, compare.length()-j);
+    if(compareSubstr == targetSubstr) { 
+        return findMaxOverlapLeft(target, minSim++, compareSubstr, j++);
+     } else {
+        return minSim-1;
+    }
+}
+
 
 void Gene::print(ofstream &ofs) {
     int i = 0; 
