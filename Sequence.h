@@ -8,8 +8,8 @@
  * Created on October 29, 2016, 6:47 PM
  */
 
-#ifndef STRING_H
-#define STRING_H
+#ifndef SEQUENCE_H
+#define SEQUENCE_H
 
 #include <iostream>
 #include <cstdlib>
@@ -24,8 +24,8 @@ public:
     Sequence(const Sequence& orig); //copy constructor
     Sequence(char str[], const int length);
     
-    String startSubstr(int begin, int end);
-    String endSubstr(int begin, int end);
+    Sequence startSubstr(int begin, int end);
+    Sequence endSubstr(int begin, int end);
     int length() const;
     void clear();
     bool empty() const;
@@ -47,5 +47,5 @@ private:
     int getCharArraySize(const char arr[]); //this function should take in a char[] and return its size by counting all the chars that occur before the terminal character.
 };
 
-#endif /* STRING_H */
+#endif /* SEQUENCE_H */
 
