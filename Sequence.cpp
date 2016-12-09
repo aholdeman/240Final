@@ -243,10 +243,6 @@ Sequence Sequence::operator +(const Sequence &two) {
 }
 
 Sequence Sequence::operator -(const Sequence &two) {
-    /* if (!strstr(this->data,two.data)) {
-        cout << "Error: cannot subtract the subsequence because it is not in the sequence" << endl;
-        exit(1);
-    }*/
     int newSize = _length - two._length ;
     
     char temp[newSize];
@@ -259,10 +255,7 @@ Sequence Sequence::operator -(const Sequence &two) {
             continue;
         }
         temp[i] = data[i];
-        cout << temp[i];
     }
-    cout << endl;
-    cout << "did it make it?" << endl;
     Sequence newSequence(temp, newSize);
     return newSequence;
 }
