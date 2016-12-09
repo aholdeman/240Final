@@ -56,8 +56,8 @@ Sequence::Sequence(char str[], const int length) {
     }
 }
 
-String String::startSubstr(int begin, int end) {
-    String subString;
+Sequence Sequence::startSubstr(int begin, int end) {
+    Sequence subString;
     int indexSize = end-begin-1;
     char testSubstr[indexSize];
     int i(begin);
@@ -65,12 +65,12 @@ String String::startSubstr(int begin, int end) {
         testSubstr[i] = data[i];
         i++;
     }
-    subString = String(testSubstr, i);
+    subString = Sequence(testSubstr, i);
     return subString;
 }
 
-String String::endSubstr(int begin, int end) {
-    String subString;
+Sequence Sequence::endSubstr(int begin, int end) {
+    Sequence subString;
     int indexSize = end-begin;
     char testSubstr[indexSize];
     int i(0);
@@ -79,7 +79,7 @@ String String::endSubstr(int begin, int end) {
         i++;
         begin++;
     }
-    subString = String(testSubstr, i);
+    subString = Sequence(testSubstr, i);
     return subString;
 }
 
